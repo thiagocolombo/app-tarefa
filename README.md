@@ -1,5 +1,5 @@
 # app-tarefa
-app de tarefa estilo kanban.
+app de tarefa estilo kanban, desenvolvido em Angular.
 
 noder version: **v20.18.3**\
 angular version: **17.3.12**

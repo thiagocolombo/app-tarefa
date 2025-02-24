@@ -1,0 +1,120 @@
+<div class="max-w-3xl mx-auto p-4">
+
+  <!-- exportar pdf -->
+  <div class="flex justify-end mb-2">
+    <button mat-raised-button color="accent" (click)="exportarPdf()">
+      <mat-icon>picture_as_pdf</mat-icon>
+      <span class="ml-1">Exportar PDF</span>
+    </button>
+  </div>
+
+  <!-- nova tarefa -->
+  <form
+    [formGroup]="formNovaTarefa"
+    class="bg-white rounded shadow p-4 flex flex-col gap-4 mb-6"
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>Título da Tarefa</mat-label>
+      <input
+        matInput
+        formControlName="titulo"
+        placeholder="O que você precisa fazer?"
+      />
+      <mat-error *ngIf="formNovaTarefa.get('titulo')?.hasError('required')">
+        Título é obrigatório
+      </mat-error>
+      <mat-error *ngIf="formNovaTarefa.get('titulo')?.hasError('maxLength')">
+        Máximo de 100 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descrição</mat-label>
+      <textarea
+        matInput
+        rows="2"
+        formControlName="descricao"
+        placeholder="Detalhes adicionais..."
+      ></textarea>
+    </mat-form-field>
+
+    <div class="flex justify-end">
+      <button mat-raised-button color="primary" (click)="adicionarTarefa()">
+        <mat-icon>add</mat-icon>
+        <span class="ml-1 hidden sm:inline-block">Adicionar</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- view das tarefas -->
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="bg-white rounded shadow p-4 flex flex-col">
+      <h2 class="font-semibold text-lg mb-2">A Fazer</h2>
+      <div
+        cdkDropList
+        id="todo-list"
+        [cdkDropListData]="tarefasTodo"
+        [cdkDropListConnectedTo]="['doing-list', 'done-list']"
+        (cdkDropListDropped)="drop($event)"
+        class="flex-1 min-h-[150px]"
+      >
+        <div
+          *ngFor="let tarefa of tarefasTodo"
+          cdkDrag
+          class="bg-gray-50 rounded p-2 mb-2 flex justify-between items-center"
+        >
+          <span>{{ tarefa.titulo }}</span>
+          <button mat-icon-button color="warn" (click)="removerTarefa(tarefa)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded shadow p-4 flex flex-col">
+      <h2 class="font-semibold text-lg mb-2">Fazendo</h2>
+      <div
+        cdkDropList
+        id="doing-list"
+        [cdkDropListData]="tarefasDoing"
+        [cdkDropListConnectedTo]="['todo-list', 'done-list']"
+        (cdkDropListDropped)="drop($event)"
+        class="flex-1 min-h-[150px]"
+      >
+        <div
+          *ngFor="let tarefa of tarefasDoing"
+          cdkDrag
+          class="bg-blue-50 rounded p-2 mb-2 flex justify-between items-center"
+        >
+          <span>{{ tarefa.titulo }}</span>
+          <button mat-icon-button color="warn" (click)="removerTarefa(tarefa)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded shadow p-4 flex flex-col">
+      <h2 class="font-semibold text-lg mb-2">Concluído</h2>
+      <div
+        cdkDropList
+        id="done-list"
+        [cdkDropListData]="tarefasDone"
+        [cdkDropListConnectedTo]="['todo-list', 'doing-list']"
+        (cdkDropListDropped)="drop($event)"
+        class="flex-1 min-h-[150px]"
+      >
+        <div
+          *ngFor="let tarefa of tarefasDone"
+          cdkDrag
+          class="bg-gray-50 rounded p-2 mb-2 flex justify-between items-center"
+        >
+          <span>{{ tarefa.titulo }}</span>
+          <button mat-icon-button color="warn" (click)="removerTarefa(tarefa)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
